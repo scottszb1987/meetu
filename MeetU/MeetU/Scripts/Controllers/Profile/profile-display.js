@@ -11,9 +11,8 @@
             PublicProfile = $resource('api/Users/Public'),
             PrivateProfile = $resource('api/Users/Private'),
             MeetupsLaunchedBy = $resource('api/Meetups/LaunchedBy'),
-            MeetupsJoinedBy = $resource('api/Meetups/JoinedBy');
-
-
+            MeetupsJoinedBy = $resource('api/Meetups/JoinedBy'),
+            Join = $resource('api/Joins');
 
         init();
 
@@ -61,6 +60,14 @@
         ]).then(function () {
             vm.contentHasLoaded = true;
         })
+
+        function isJoined(userId) {
+
+        }
+
+        function toggleJoin(modelView) {
+
+        }
 
         function showPersonalInformation() {
             vm.isPersonalInformation = true;
@@ -129,22 +136,22 @@
 
             return profileInfo;
         }
-    }
 
-    function convertGender(gender) {
-        var genders = {
-            "male": {
-                "class": "fa-mars",
-                "color": "rgb(54,169,224)"
-            },
-            "female": {
-                "class": "fa-venus",
-                "color": "rgb(232,30,116)"
+        function convertGender(gender) {
+            var genders = {
+                "male": {
+                    "class": "fa-mars",
+                    "color": "rgb(54,169,224)"
+                },
+                "female": {
+                    "class": "fa-venus",
+                    "color": "rgb(232,30,116)"
+                }
             }
-        }
-        return genders[gender] || {
-            "class": "fa-genderless",
-            "color": "rgb(153,153,153)"
+            return genders[gender] || {
+                "class": "fa-genderless",
+                "color": "rgb(153,153,153)"
+            }
         }
     }
 })();
