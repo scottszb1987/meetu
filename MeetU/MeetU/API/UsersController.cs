@@ -13,7 +13,60 @@ namespace MeetU.API
     public class UsersController : ApiController
     {
         private readonly MuDbContext db = new MuDbContext();
+
         private string LoggedInUserId => User.Identity.GetUserId();
+
+        [Route("api/Users/Following")]
+        public IHttpActionResult GetFollowing(string userId)
+        {
+            return Ok(db
+                .Follows
+                .Where(f => f.FollowedUserId == userId)
+                .Join(
+                    db.Profiles,
+                    follow => follow.FollowingUserId,
+                    profile => profile.UserId,
+                    (f, p) => new
+                    {
+                        p.UserId,
+                        p.Brief,
+                        p.CreatedAt,
+                        p.Gender,
+                        p.NickName,
+                        p.Picture,
+                        p.UpdatedAt,
+                        JoinedMeetupsTotal = db.Joins.Where(j => j.UserId == p.UserId).Count(),
+                        LaunchedMeetupsTotal = db.Meetups.Where( m => m.Sponsor == p.UserId).Count()
+                    }
+                )
+            );
+        }
+
+        [Route("api/Users/FollowedBy")]
+        public IHttpActionResult GetFollowedBy(string userId)
+        {
+            return Ok(db
+                .Follows
+                .Where(f => f.FollowingUserId == userId)
+                .Join(
+                    db.Profiles,
+                    follow => follow.FollowedUserId,
+                    profile => profile.UserId,
+                    (f, p) => new
+                    {
+                        p.UserId,
+                        p.Brief,
+                        p.CreatedAt,
+                        p.Gender,
+                        p.NickName,
+                        p.Picture,
+                        p.UpdatedAt,
+                        JoinedMeetupsTotal = db.Joins.Where(j => j.UserId == p.UserId).Count(),
+                        LaunchedMeetupsTotal = db.Meetups.Where(m => m.Sponsor == p.UserId).Count()
+                    }
+                )
+            );
+        }
 
         [Route("api/Users/Public")]
         public async Task<IHttpActionResult> GetPublicProfile(string userId, int joinedAmount, int launchedAmount)

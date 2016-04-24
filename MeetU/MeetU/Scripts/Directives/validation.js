@@ -2,7 +2,7 @@
     "use strict";
            angular
               .module("meetupModule")
-              .directive('myValidation', function () {
+              .directive('muValidation', function () {
             return {
                 restrict: 'A',
                 require: '^form',
@@ -28,7 +28,7 @@
                         el.toggleClass('has-error', invalid);
                     });
 
-                    scope.$on('show-errors-check-validity', function () {
+                    scope.$on('show-errors-event', function () {
                         el.toggleClass('has-error', formCtrl[inputName].$invalid);
                     });
 
